@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+
+from ansible_toolkit import show_vars
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('host')
+    args = parser.parse_args()
+    show_vars(args.host)
