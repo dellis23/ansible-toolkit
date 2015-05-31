@@ -1,7 +1,7 @@
 from setuptools import setup
 
 
-setup(name='Ansible Toolkit',
+setup(name='ansible-toolkit',
       version='1.0',
       description='The missing Ansible tools',
       url='http://github.com/dellis23/ansible-toolkit',
