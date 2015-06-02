@@ -29,7 +29,7 @@ def red(text):
 def get_vault_password():
     try:
         password_file = config.get('vault', 'password_file')
-        with open(password_file, 'rb') as f:
+        with open(os.path.expanduser(password_file), 'rb') as f:
             return f.read()
     except ConfigParser.NoSectionError:
         return None
@@ -39,7 +39,7 @@ def get_vault_password():
 
 def get_inventory():
     try:
-        inventory_path = config.get('inventory', 'path')
+        inventory_path = os.path.expanduser(config.get('inventory', 'path'))
     except ConfigParser.NoSectionError:
         inventory_path = 'inventory'
     return Inventory(inventory_path, vault_password=get_vault_password())
