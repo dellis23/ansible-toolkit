@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 import argparse
-import sys
 
-from ansible_toolkit.show_vars import show_vars
+from ansible_toolkit.show_template import show_template
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('host')
+    parser.add_argument('path')
     args = parser.parse_args()
-    show_vars(args.host)
+    show_template(args.host, args.path)

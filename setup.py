@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 setup(name='ansible-toolkit',
-      version='1.0',
+      version='1.1',
       description='The missing Ansible tools',
       url='http://github.com/dellis23/ansible-toolkit',
       author='Daniel Ellis',
@@ -12,4 +12,5 @@ setup(name='ansible-toolkit',
       packages=['ansible_toolkit'],
       scripts=[
           'bin/atk-show-vars',
+          'bin/atk-show-template',
       ])
