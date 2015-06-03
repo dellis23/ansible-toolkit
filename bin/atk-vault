@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+
+from ansible_toolkit import vault
+
+
+if __name__ == '__main__':
+
+    # Parse Args
+    parser = argparse.ArgumentParser()
+    parser.add_argument('action', help="open, close")
+    args = parser.parse_args()
+    if args.action not in ['open', 'close']:
+        raise RuntimeError(
+            "atk-vault command must be either 'open' or 'close'")
+
+    # Open / Close Vault
+    if args.action == 'open':
+        vault.backup_all()
+    elif args.action == 'close':
+        vault.restore_all()
