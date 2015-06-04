@@ -3,6 +3,7 @@ import errno
 import os
 
 from ansible.inventory import Inventory
+from ansible.utils import read_vault_file
 
 
 config = ConfigParser.ConfigParser()
@@ -30,8 +31,7 @@ def red(text):
 def get_vault_password():
     try:
         password_file = config.get('vault', 'password_file')
-        with open(os.path.expanduser(password_file), 'rb') as f:
-            return f.read()
+        return read_vault_file(password_file)
     except ConfigParser.NoSectionError:
         return None
 
