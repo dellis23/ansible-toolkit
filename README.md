@@ -59,6 +59,10 @@ And the value of `template_var` was set to `3` for `host`, the output would be:
     $ atk-show-template host roles/foo/templates/template.j2
     template_key = 3
 
+#### Optional Arguments ####
+
+ * `--no-gather-facts` - disable fact gathering on host
+
 ### atk-vault ###
 
 With a large amount of vaulted ansible files, encrypting can take
@@ -93,6 +97,10 @@ to make it work for more environments.
 
 Changelog
 ---------
+
+### 1.2.1 ###
+
+Add fact gathering functionality to `atk-show-template`.
 
 ### 1.2 ###
 
