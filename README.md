@@ -98,6 +98,10 @@ to make it work for more environments.
 Changelog
 ---------
 
+### 1.2.2 ###
+
+Fix the way newlines are handled in vault decryption.
+
 ### 1.2.1 ###
 
 Add fact gathering functionality to `atk-show-template`.
