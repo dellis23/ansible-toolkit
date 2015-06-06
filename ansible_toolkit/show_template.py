@@ -1,8 +1,3 @@
-import ansible.inventory
-import ansible.runner
-import ansible.callbacks
-import ansible.cache
-
 from ansible.runner import Runner
 from ansible.utils.template import template_from_file
 
@@ -10,8 +5,9 @@ from utils import get_inventory
 from utils_ansible import gather_facts as get_gathered_facts
 
 
-def show_template(host, path, gather_facts=True):
-    inventory = get_inventory()
+def show_template(host, path, gather_facts=True,
+                  inventory_file=None, password_file=None):
+    inventory = get_inventory(inventory_file, password_file)
     setup_cache = get_gathered_facts(host, inventory) if gather_facts else {}
 
     # Show the template

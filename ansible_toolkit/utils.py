@@ -28,22 +28,26 @@ def red(text):
 
 # Vault Password
 
-def get_vault_password():
-    try:
-        password_file = config.get('vault', 'password_file')
-        return read_vault_file(password_file)
-    except ConfigParser.NoSectionError:
-        return None
+def get_vault_password(password_file=None):
+    if password_file is None:
+        try:
+            password_file = config.get('vault', 'password_file')
+        except ConfigParser.NoSectionError:
+            return None
+    return read_vault_file(password_file)
 
 
 # Inventory
 
-def get_inventory():
-    try:
-        inventory_path = os.path.expanduser(config.get('inventory', 'path'))
-    except ConfigParser.NoSectionError:
-        inventory_path = 'inventory'
-    return Inventory(inventory_path, vault_password=get_vault_password())
+def get_inventory(inventory_path=None, vault_password_path=None):
+    if inventory_path is None:
+        try:
+            inventory_path = os.path.expanduser(
+                config.get('inventory', 'path'))
+        except ConfigParser.NoSectionError:
+            inventory_path = 'inventory'
+    vault_password = get_vault_password(vault_password_path)
+    return Inventory(inventory_path, vault_password=vault_password)
 
 
 # Filesystem Tools
@@ -51,10 +55,11 @@ def get_inventory():
 def mkdir_p(path):
     try:
         os.makedirs(path)
-    except OSError as exc: # Python >2.5
+    except OSError as exc:  # Python >2.5
         if exc.errno == errno.EEXIST and os.path.isdir(path):
             pass
-        else: raise
+        else:
+            raise
 
 
 def split_path(path):

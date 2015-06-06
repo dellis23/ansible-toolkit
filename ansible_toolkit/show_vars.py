@@ -64,8 +64,8 @@ def get_inject_vars(self, host):
     return inject
 
 
-def show_vars(host):
-    inventory = get_inventory()
+def show_vars(host, inventory_file=None, password_file=None):
+    inventory = get_inventory(inventory_file, password_file)
     Runner.get_inject_vars = get_inject_vars
     runner = Runner(inventory=inventory)
     runner.get_inject_vars(host)

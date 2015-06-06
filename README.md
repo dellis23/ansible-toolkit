@@ -32,7 +32,14 @@ directory an Ansible Toolkit command is run from.  To override:
     [inventory]
     path = /home/foo/inventory
 
-Usage
+### Optional Arguments ###
+
+If you have multiple Ansible inventories or password files, or for whatever reason do not wish to set up a configuration file, the configuration can be optionally passed on the command line:
+
+    -i, --inventory
+    -p, --vault-password-file
+
+Tools
 -----
 
 ### atk-show-vars ###
@@ -97,6 +104,11 @@ to make it work for more environments.
 
 Changelog
 ---------
+
+### 1.2.3 ###
+
+Add ability to specify vault password file and inventory file on the command 
+line.
 
 ### 1.2.2 ###
 

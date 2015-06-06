@@ -9,13 +9,13 @@ from utils import get_vault_password, mkdir_p, split_path, get_files
 ATK_VAULT = '.atk-vault'
 
 
-def backup(path):
+def backup(path, password_file=None):
     """
     Replaces the contents of a file with its decrypted counterpart, storing the
     original encrypted version and a hash of the file contents for later
     retrieval.
     """
-    vault = VaultLib(get_vault_password())
+    vault = VaultLib(get_vault_password(password_file))
     with open(path, 'r') as f:
         encrypted_data = f.read()
 
@@ -41,19 +41,19 @@ def backup(path):
                 f.write(decrypted_data)
 
 
-def backup_all():
+def backup_all(password_file=None):
     for file_ in get_files('.'):
-        backup(file_)
+        backup(file_, password_file)
 
 
-def restore(path):
+def restore(path, password_file=None):
     """
     Retrieves a file from the atk vault and restores it to its original
     location, re-encrypting it if it has changed.
 
     :param path: path to original file
     """
-    vault = VaultLib(get_vault_password())
+    vault = VaultLib(get_vault_password(password_file))
     atk_path = os.path.join(ATK_VAULT, path)
 
     # Load stored data
@@ -82,10 +82,10 @@ def restore(path):
     os.remove(os.path.join(atk_path, 'hash'))
 
 
-def restore_all():
+def restore_all(password_file=None):
     for file_ in get_files(ATK_VAULT):
         if os.path.basename(file_) == 'encrypted':
 
             # Get the path without the atk vault base and encrypted filename
             original_path = os.path.join(*split_path(file_)[1:-1])
-            restore(original_path)
+            restore(original_path, password_file)
