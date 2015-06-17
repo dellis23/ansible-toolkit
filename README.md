@@ -97,8 +97,8 @@ to detect and force this by default.
 ### atk-git-diff ###
 
 Doing a `git diff` on encrypted files produces some pretty useless output.  
-`atk-git-diff` will detect changes via `git diff` unencrypt the before and 
-after and then show the difference.
+`atk-git-diff` will detect changes via `git diff`, unencrypt the before and 
+after, and show the difference.
 
 This:
 
