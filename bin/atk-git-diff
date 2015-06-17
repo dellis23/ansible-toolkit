@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+import argparse
+import subprocess
+import sys
+
+from ansible_toolkit.git_diff import show_unencrypted_diffs
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', '--vault-password-file', type=str,
+                        help="Path to vault password file")
+    args = parser.parse_args()
+    output = subprocess.check_output(['git', 'diff'])
+    show_unencrypted_diffs(output, args.vault_password_file)

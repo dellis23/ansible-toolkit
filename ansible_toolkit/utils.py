@@ -13,8 +13,10 @@ config.read([os.path.expanduser('~/.atk')])
 
 # Terminal Colors
 
-GREEN = '\033[92m'
-RED = '\033[91m'
+RED = '\033[31m'
+GREEN = '\033[32m'
+CYAN = '\033[36m'
+INTENSE = '\033[1m'
 ENDC = '\033[0m'
 
 
@@ -24,6 +26,14 @@ def green(text):
 
 def red(text):
     print RED + text + ENDC
+
+
+def cyan(text):
+    print CYAN + text + ENDC
+
+
+def intense(text):
+    print INTENSE + text + ENDC
 
 
 # Vault Password
@@ -73,8 +83,8 @@ def split_path(path):
     parts = []
     path, tail = os.path.split(path)
     while path and tail:
-         parts.append(tail)
-         path, tail = os.path.split(path)
+        parts.append(tail)
+        path, tail = os.path.split(path)
     parts.append(os.path.join(path, tail))
     return map(os.path.normpath, parts)[::-1]
 

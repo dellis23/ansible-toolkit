@@ -94,6 +94,21 @@ It's important that the vault always be opened and closed from the
 base directory of your ansible project.  Newer versions may attempt
 to detect and force this by default.
 
+### atk-git-diff ###
+
+Doing a `git diff` on encrypted files produces some pretty useless output.  
+`atk-git-diff` will detect changes via `git diff` unencrypt the before and 
+after and then show the difference.
+
+This:
+
+   ![Encrypted git diff output](https://github.com/dellis23/ansible-toolkit/blob/master/img/git-diff-encrypted.png)
+
+Becomes:
+
+   ![Unencrypted git diff output](https://github.com/dellis23/ansible-toolkit/blob/master/img/git-diff-unencrypted.png)
+
+
 Contributing
 ------------
 
@@ -104,6 +119,10 @@ to make it work for more environments.
 
 Changelog
 ---------
+
+### 1.3.0 ###
+
+`atk-git-diff` added.
 
 ### 1.2.3 ###
 
