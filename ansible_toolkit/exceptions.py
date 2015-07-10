@@ -1,0 +1,2 @@
+class MalformedGitDiff(Exception):
+    pass

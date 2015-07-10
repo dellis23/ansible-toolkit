@@ -2,6 +2,7 @@ import tempfile
 import unittest
 
 from ansible_toolkit import git_diff
+from ansible_toolkit.exceptions import MalformedGitDiff
 
 
 VAULT_PASSWORD = "foo"
@@ -60,6 +61,24 @@ index 6b9eef7..eb9fb09 100644
 +65393432336536653066303736336632356364306533643131656461316332353138316239336137
 +3038396139303439356236343161396331353332326232626566"""
 
+DELETED_FILE_DIFF = """
+diff --git a/foo b/foo
+deleted file mode 100644
+index 257cc56..0000000
+--- a/foo
++++ /dev/null
+@@ -1 +0,0 @@
+-foo"""
+
+ADDED_FILE_DIFF = """
+diff --git a/bar b/bar
+new file mode 100644
+index 0000000..5716ca5
+--- /dev/null
++++ b/bar
+@@ -0,0 +1 @@
++bar"""
+
 
 class TestGitDiff(unittest.TestCase):
 
@@ -76,6 +95,27 @@ class TestGitDiff(unittest.TestCase):
         parts = git_diff.get_parts(SAMPLE_DIFF)
         old_filename = git_diff.get_old_filename(parts[0])
         self.assertEqual(old_filename, 'group_vars/foo')
+
+    def test_get_old_filename_for_added_file(self):
+        parts = git_diff.get_parts(ADDED_FILE_DIFF)
+        old_filename = git_diff.get_old_filename(parts[0])
+        self.assertEqual(old_filename, '/dev/null')
+
+    def test_missing_old_filename_raises_exception(self):
+        self.assertRaises(MalformedGitDiff, git_diff.get_old_filename, '')
+
+    def test_get_new_filename(self):
+        parts = git_diff.get_parts(SAMPLE_DIFF)
+        new_filename = git_diff.get_new_filename(parts[0])
+        self.assertEqual(new_filename, 'group_vars/foo')
+
+    def test_get_new_filename_for_deleted_file(self):
+        parts = git_diff.get_parts(DELETED_FILE_DIFF)
+        new_filename = git_diff.get_new_filename(parts[0])
+        self.assertEqual(new_filename, '/dev/null')
+
+    def test_missing_new_filename_raises_exception(self):
+        self.assertRaises(MalformedGitDiff, git_diff.get_new_filename, '')
 
     def test_decrypt_diff(self):
 

@@ -120,6 +120,10 @@ to make it work for more environments.
 Changelog
 ---------
 
+### 1.3.1 ###
+
+`atk-git-diff` now does not fail when a diff contains deleted or added files.
+
 ### 1.3.0 ###
 
 `atk-git-diff` added.

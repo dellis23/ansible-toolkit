@@ -5,6 +5,7 @@ import subprocess
 
 from ansible.utils.vault import VaultLib
 
+from exceptions import MalformedGitDiff
 from utils import get_vault_password, green, red, cyan, intense
 
 
@@ -31,8 +32,19 @@ def get_old_filename(diff_part):
     """
     Returns the filename for the original file that was changed in a diff part.
     """
-    r = re.compile(r'^--- a/(.*)', re.MULTILINE)
-    return r.search(diff_part).groups()[0]
+    regexps = (
+        # e.g. "+++ a/foo/bar"
+        r'^--- a/(.*)',
+        # e.g. "+++ /dev/null"
+        r'^\-\-\- (.*)',
+    )
+    for regexp in regexps:
+        r = re.compile(regexp, re.MULTILINE)
+        match = r.search(diff_part)
+        if match is not None:
+            return match.groups()[0]
+    raise MalformedGitDiff("No old filename in diff part found.  "
+                           "Examined diff part: {}".format(diff_part))
 
 
 def get_old_contents(sha, filename):
@@ -43,8 +55,19 @@ def get_new_filename(diff_part):
     """
     Returns the filename for the updated file in a diff part.
     """
-    r = re.compile(r'^\+\+\+ b/(.*)', re.MULTILINE)
-    return r.search(diff_part).groups()[0]
+    regexps = (
+        # e.g. "+++ b/foo/bar"
+        r'^\+\+\+ b/(.*)',
+        # e.g. "+++ /dev/null"
+        r'^\+\+\+ (.*)',
+    )
+    for regexp in regexps:
+        r = re.compile(regexp, re.MULTILINE)
+        match = r.search(diff_part)
+        if match is not None:
+            return match.groups()[0]
+    raise MalformedGitDiff("No new filename in diff part found.  "
+                           "Examined diff part: {}".format(diff_part))
 
 
 def get_new_contents(filename):
