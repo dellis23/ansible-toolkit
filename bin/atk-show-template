@@ -11,18 +11,23 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('host')
     parser.add_argument('path')
-    parser.add_argument(
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
         "--no-gather-facts",
         help="don't gather facts from host for template rendering",
         action="store_true",
     )
+    group.add_argument('-u', '--user', type=str,
+                       help="User to use for gathering facts")
     parser.add_argument('-i', '--inventory', type=str,
                         help="Path to inventory file")
     parser.add_argument('-p', '--vault-password-file', type=str,
                         help="Path to vault password file")
+
     args = parser.parse_args()
     gather_facts = not args.no_gather_facts
 
     # Render Template
     show_template(args.host, args.path, gather_facts,
-                  args.inventory, args.vault_password_file)
+                  args.inventory, args.vault_password_file,
+                  args.user)

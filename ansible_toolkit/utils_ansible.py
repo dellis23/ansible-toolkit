@@ -2,7 +2,7 @@ import tempfile
 
 import ansible.callbacks
 from ansible.playbook import PlayBook
-
+import ansible.constants as C
 from utils import get_inventory
 
 
@@ -23,7 +23,7 @@ class Callbacks(object):
         return do_nothing
 
 
-def gather_facts(host, inventory=None):
+def gather_facts(host, inventory=None, user=None):
     if inventory is None:
         inventory = get_inventory()
 
@@ -45,6 +45,7 @@ def gather_facts(host, inventory=None):
             inventory=inventory,
             callbacks=Callbacks(),
             runner_callbacks=Callbacks(),
+            remote_user=user or C.DEFAULT_REMOTE_USER,
             stats=stats,
         )
         playbook.run()
