@@ -120,6 +120,10 @@ to make it work for more environments.
 Changelog
 ---------
 
+### 1.3.2 ###
+
+`atk-show-template` now allows specification of which user to gather facts as.
+
 ### 1.3.1 ###
 
 `atk-git-diff` now does not fail when a diff contains deleted or added files.

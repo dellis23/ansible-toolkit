@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 setup(name='ansible-toolkit',
-      version='1.3.1',
+      version='1.3.2',
       description='The missing Ansible tools',
       url='http://github.com/dellis23/ansible-toolkit',
       author='Daniel Ellis',
