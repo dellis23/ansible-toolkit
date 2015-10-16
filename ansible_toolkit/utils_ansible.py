@@ -3,7 +3,7 @@ import tempfile
 import ansible.callbacks
 from ansible.playbook import PlayBook
 import ansible.constants as C
-from utils import get_inventory
+from utils import get_inventory, green, yellow
 
 
 SETUP_PLAYBOOK = """
@@ -37,9 +37,6 @@ def gather_facts(host, inventory=None, user=None):
 
         # ... run setup module
         stats = ansible.callbacks.AggregateStats()
-        # callbacks = ansible.callbacks.PlaybookCallbacks(verbose=VERBOSITY)
-        # runner_callbacks = ansible.callbacks.PlaybookRunnerCallbacks(
-        #     stats, verbose=VERBOSITY)
         playbook = PlayBook(
             playbook=playbook_file.name,
             inventory=inventory,
@@ -48,7 +45,12 @@ def gather_facts(host, inventory=None, user=None):
             remote_user=user or C.DEFAULT_REMOTE_USER,
             stats=stats,
         )
-        playbook.run()
+        results = playbook.run()
+
+        # ... notify the user of failures
+        for host, result in results.iteritems():
+            if result.get('unreachable') or result.get('failures'):
+                yellow('Unable to gather facts for host "{}"'.format(host))
 
     finally:
         playbook_file.close()

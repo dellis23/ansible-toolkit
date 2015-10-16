@@ -15,6 +15,7 @@ config.read([os.path.expanduser('~/.atk')])
 
 RED = '\033[31m'
 GREEN = '\033[32m'
+YELLOW = '\033[33m'
 CYAN = '\033[36m'
 INTENSE = '\033[1m'
 ENDC = '\033[0m'
@@ -26,6 +27,10 @@ def green(text):
 
 def red(text):
     print RED + text + ENDC
+
+
+def yellow(text):
+    print YELLOW + text + ENDC
 
 
 def cyan(text):
