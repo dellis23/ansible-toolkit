@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from ansible.runner import Runner
 from ansible.utils import combine_vars, template
 

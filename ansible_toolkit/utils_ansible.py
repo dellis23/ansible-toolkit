@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+
 import tempfile
 
 import ansible.callbacks
 from ansible.playbook import PlayBook
 import ansible.constants as C
-from utils import get_inventory, green, yellow
+from utils import get_inventory, yellow
 
 
 SETUP_PLAYBOOK = """

@@ -1,12 +1,15 @@
+# -*- coding: utf-8 -*-
+
 import hashlib
 import os
 
-from ansible.utils.vault import VaultLib
-
 from utils import get_vault_password, mkdir_p, split_path, get_files
 
+from . import DaoImpl
 
 ATK_VAULT = '.atk-vault'
+
+VaultLib = DaoImpl.get_vault_lib()
 
 
 def backup(path, password_file=None):

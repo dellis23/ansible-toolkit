@@ -1,12 +1,16 @@
+# -*- coding: utf-8 -*-
+
 import difflib
-from itertools import islice
 import re
 import subprocess
 
-from ansible.utils.vault import VaultLib
-
 from exceptions import MalformedGitDiff
+from itertools import islice
 from utils import get_vault_password, green, red, cyan, intense
+
+from . import DaoImpl
+
+VaultLib = DaoImpl.get_vault_lib()
 
 
 def get_parts(git_diff_output):

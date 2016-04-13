@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
+
 import ConfigParser
 import errno
 import os
 
 from ansible.inventory import Inventory
-from ansible.utils import read_vault_file
 
+from . import DaoImpl
 
 config = ConfigParser.ConfigParser()
 
@@ -49,7 +51,7 @@ def get_vault_password(password_file=None):
             password_file = config.get('vault', 'password_file')
         except ConfigParser.NoSectionError:
             return None
-    return read_vault_file(password_file)
+    return DaoImpl.read_vault_file(password_file)
 
 
 # Inventory
