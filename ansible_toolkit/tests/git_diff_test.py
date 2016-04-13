@@ -121,10 +121,12 @@ class TestGitDiff(unittest.TestCase):
 
         # Monkey-patch
         _get_old_contents = git_diff.get_old_contents
+
         def get_old_contents(*args):  # noqa
             return OLD_FILE_1
         git_diff.get_old_contents = get_old_contents
         _get_new_contents = git_diff.get_new_contents
+
         def get_new_contents(*args):  # noqa
             return NEW_FILE_1
         git_diff.get_new_contents = get_new_contents

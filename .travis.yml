@@ -1,0 +1,27 @@
+language: python
+sudo: false
+branches:
+  except:
+    - gh-pages
+
+matrix:
+  include:
+    - python: 2.7
+      env: TOXENV=py27-ansible194
+  allow_failures:
+    - python: 2.7
+      env: TOXENV=py27-ansible2010
+
+install:
+  - pip install tox
+
+before_script:
+  - mkdir -p log
+
+script:
+  - tox
+
+after_success:
+  - pylint ansible_toolkit
+  - pip install coveralls
+  - coveralls
