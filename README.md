@@ -1,8 +1,9 @@
-Ansible Toolkit
-===============
+# Ansible Toolkit
 
-Description
------------
+[![Build Status](https://travis-ci.org/dellis23/ansible-toolkit.svg?branch=master)](https://travis-ci.org/dellis23/ansible-toolkit)
+
+
+## Description
 
 Ansible is a neat infrastructure management tool, but it sometimes feels
 like the only way to to find out what's going to happen when you run things
@@ -11,8 +12,7 @@ is to... run them.  That's time consuming and potentially dangerous.
 **Ansible Toolkit** hopes to solve that by providing some simple additional
 visibility tools. 
 
-Setup
------
+## Setup
 
 Just pip install it.
 
@@ -39,8 +39,7 @@ If you have multiple Ansible inventories or password files, or for whatever reas
     -i, --inventory
     -p, --vault-password-file
 
-Tools
------
+## Tools
 
 ### atk-show-vars ###
 
@@ -109,16 +108,14 @@ Becomes:
    ![Unencrypted git diff output](https://github.com/dellis23/ansible-toolkit/blob/master/img/git-diff-unencrypted.png)
 
 
-Contributing
-------------
+## Contributing
 
 There's probably a few things here that are too narrow and will only work
 on my team's platform / setup.  If you run into any obvious problems / 
 limitations please create an issue.  If people start using this, I'll be happy
 to make it work for more environments.
 
-Changelog
----------
+## Changelog
 
 ### 1.3.2 ###
 
