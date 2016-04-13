@@ -8,7 +8,6 @@ matrix:
   include:
     - python: 2.7
       env: TOXENV=py27-ansible194
-  allow_failures:
     - python: 2.7
       env: TOXENV=py27-ansible2010
 
