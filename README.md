@@ -1,4 +1,7 @@
-#Ansible Toolkit
+# Ansible Toolkit
+
+[![Build Status](https://travis-ci.org/dellis23/ansible-toolkit.svg?branch=master)](https://travis-ci.org/dellis23/ansible-toolkit)
+
 
 ## Description
 
