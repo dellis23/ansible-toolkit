@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import ConfigParser
 import errno
 import os
