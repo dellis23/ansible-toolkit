@@ -118,41 +118,8 @@ on my team's platform / setup.  If you run into any obvious problems /
 limitations please create an issue.  If people start using this, I'll be happy
 to make it work for more environments.
 
+
 ## Changelog
 
-### 1.3.2 ###
+Please visit the [Releases page](https://github.com/dellis23/ansible-toolkit/releases).
 
-`atk-show-template` now allows specification of which user to gather facts as.
-
-### 1.3.1 ###
-
-`atk-git-diff` now does not fail when a diff contains deleted or added files.
-
-### 1.3.0 ###
-
-`atk-git-diff` added.
-
-### 1.2.3 ###
-
-Add ability to specify vault password file and inventory file on the command 
-line.
-
-### 1.2.2 ###
-
-Fix the way newlines are handled in vault decryption.
-
-### 1.2.1 ###
-
-Add fact gathering functionality to `atk-show-template`.
-
-### 1.2 ###
-
-`atk-vault` added.
-
-### 1.1 ###
-
-`atk-show-template` added.
-
-### 1.0 ###
-
-Initial version with `atk-show-vars` released.
