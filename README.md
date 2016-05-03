@@ -1,6 +1,9 @@
 # Ansible Toolkit
 
 [![Build Status](https://travis-ci.org/dellis23/ansible-toolkit.svg?branch=master)](https://travis-ci.org/dellis23/ansible-toolkit)
+[![Code Health](https://landscape.io/github/dellis23/ansible-toolkit/master/landscape.png)](https://landscape.io/github/dellis23/ansible-toolkit/master)
+[![Coverage Status](https://coveralls.io/repos/dellis23/ansible-toolkit/badge.png)](https://coveralls.io/r/dellis23/ansible-toolkit)
+[![Requirements Status](https://requires.io/github/dellis23/ansible-toolkit/requirements.png?branch=master)](https://requires.io/github/dellis23/ansible-toolkit/requirements/?branch=master)
 
 
 ## Description
