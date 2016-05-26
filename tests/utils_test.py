@@ -29,6 +29,7 @@ class ColorTestCase(unittest.TestCase):
         self.patch_stdout = mock.patch(
             'ansible_toolkit.utils.sys.stdout', autospec=True)
         self.mock_stdout = self.patch_stdout.start()
+        self.mock_stdout.write.return_value = None
         self.text = 'test text'
 
     def tearDown(self):
@@ -160,14 +161,81 @@ class ShowDiffTestCase(unittest.TestCase):
 
     """Test case for the ansible_toolkit.utils.show_diff() function."""
 
-    @mock.patch('ansible_toolkit.utils.sys.stdout.write', autospec=True)
-    def test_no_diff(self, mock_write):
+    def setUp(self):
+        """Setup mock object for ansible_toolkit.utils.sys.stdout."""
+        self.patch_stdout = mock.patch(
+            'ansible_toolkit.utils.sys.stdout', autospec=True)
+        self.mock_stdout = self.patch_stdout.start()
+        self.mock_stdout.write.return_value = None
+
+    def tearDown(self):
+        """Tear down ansible_toolkit.utils.sys.stdout mock object."""
+        self.patch_stdout.stop()
+
+    def test_nothing(self):
+        """Empty dictionaries"""
 
         old = {}
         new = {}
 
         self.assertIsNone(show_diff(old, new))
-        self.assertFalse(mock_write.called)
+        self.assertFalse(self.mock_stdout.write.called)
+
+    def test_diff_change(self):
+        """New dictionary overwrites the value of a key."""
+        old = {'key': 'value'}
+        new = {'key': 'other'}
+
+        self.assertIsNone(show_diff(old, new))
+        self.assertTrue(self.mock_stdout.write.called)
+        expected = [
+            mock.call(
+                '%s - %s%s\n' % (
+                    ansible_toolkit.utils.RED,
+                    "['key'] = value",
+                    ansible_toolkit.utils.ENDC
+                )
+            ),
+            mock.call(
+                '%s + %s%s\n' % (
+                    ansible_toolkit.utils.GREEN,
+                    "['key'] = other",
+                    ansible_toolkit.utils.ENDC
+                ))
+        ]
+        self.mock_stdout.write.assert_has_calls(expected)
+
+    def test_diff_plus(self):
+        """New dictionary has an extra key/value."""
+        old = {}
+        new = {'key': 'value'}
+
+        self.assertIsNone(show_diff(old, new))
+        self.assertTrue(self.mock_stdout.write.called)
+        self.mock_stdout.write.assert_called_once_with(
+            '%s + %s%s\n' % (
+                ansible_toolkit.utils.GREEN,
+                "['key'] = value",
+                ansible_toolkit.utils.ENDC
+            )
+        )
+
+    def test_diff_minus(self):
+        """Old dictionary has an extra key/value."""
+        old = {'key': 'value'}
+        new = {}
+
+        self.assertIsNone(show_diff(old, new))
+        self.assertFalse(self.mock_stdout.write.called)
+
+    def test_equal(self):
+        """Old and new dictionaries are the same"""
+
+        old = {'key': 'value'}
+        new = old
+
+        self.assertIsNone(show_diff(old, new))
+        self.assertFalse(self.mock_stdout.write.called)
 
 
 class SplitPathTestCase(unittest.TestCase):
