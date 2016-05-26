@@ -8,7 +8,7 @@ from ansible_toolkit.utils import show_diff
 
 class TestShowDiff(unittest.TestCase):
 
-    """Test case for the ansible_toolkit.show_vars module."""
+    """Test case for the ansible_toolkit.utils.show_diff function."""
 
     @mock.patch('ansible_toolkit.utils.sys.stdout.write', autospec=True)
     def test_no_diff(self, mock_write):
