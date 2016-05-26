@@ -6,7 +6,8 @@ import os.path
 
 from .dao import create_dao
 from .utils import get_files, split_path
-from .vault import ATK_VAULT, restore
+from .vault import ATK_VAULT, backup, restore
+
 
 config = ConfigParser.ConfigParser()
 config.read([os.path.expanduser('~/.atk')])
@@ -46,3 +47,12 @@ def close_vault(vault_password_file=None):
             # Get the path without the atk vault base and encrypted filename
             original_path = os.path.join(*split_path(file_)[1:-1])
             restore(original_path, vault_password_file)
+
+
+def open_vault(vault_password_file=None):
+    """
+    :param vault_password_file:
+        the path to the Ansible vault password file.
+    """
+    for file_ in get_files('.'):
+        backup(file_, vault_password_file)

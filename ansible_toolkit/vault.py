@@ -3,7 +3,7 @@
 import hashlib
 
 import os
-from utils import mkdir_p, get_files
+from utils import mkdir_p
 from . import get_vault
 
 
@@ -40,11 +40,6 @@ def backup(path, password_file=None):
             # Replace encrypted file with decrypted one
             with open(path, 'wb') as f:
                 f.write(decrypted_data)
-
-
-def backup_all(password_file=None):
-    for file_ in get_files('.'):
-        backup(file_, password_file)
 
 
 def restore(path, password_file=None):

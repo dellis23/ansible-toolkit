@@ -3,8 +3,6 @@
 import ansible_toolkit
 import argparse
 
-from ansible_toolkit import vault
-
 
 if __name__ == '__main__':
 
@@ -20,6 +18,6 @@ if __name__ == '__main__':
 
     # Open / Close Vault
     if args.action == 'open':
-        vault.backup_all(args.vault_password_file)
+        ansible_toolkit.open_vault(args.vault_password_file)
     elif args.action == 'close':
         ansible_toolkit.close_vault(args.vault_password_file)
