@@ -3,6 +3,7 @@
 import ConfigParser
 import errno
 import os
+import sys
 
 from ansible.inventory import Inventory
 
@@ -24,23 +25,23 @@ ENDC = '\033[0m'
 
 
 def green(text):
-    print GREEN + text + ENDC
+    sys.stdout.write('%s%s%s\n' % (GREEN, text, ENDC))
 
 
 def red(text):
-    print RED + text + ENDC
+    sys.stdout.write('%s%s%s\n' % (RED, text, ENDC))
 
 
 def yellow(text):
-    print YELLOW + text + ENDC
+    sys.stdout.write('%s%s%s\n' % (YELLOW, text, ENDC))
 
 
 def cyan(text):
-    print CYAN + text + ENDC
+    sys.stdout.write('%s%s%s\n' % (CYAN, text, ENDC))
 
 
 def intense(text):
-    print INTENSE + text + ENDC
+    sys.stdout.write('%s%s%s\n' % (INTENSE, text, ENDC))
 
 
 # Vault Password
