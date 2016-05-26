@@ -3,13 +3,11 @@
 import hashlib
 import os
 
-from utils import get_vault_password, mkdir_p, split_path, get_files
+from utils import mkdir_p, split_path, get_files
 
-from . import DaoImpl
+from . import get_vault
 
 ATK_VAULT = '.atk-vault'
-
-VaultLib = DaoImpl.get_vault_lib()
 
 
 def backup(path, password_file=None):
@@ -18,7 +16,7 @@ def backup(path, password_file=None):
     original encrypted version and a hash of the file contents for later
     retrieval.
     """
-    vault = VaultLib(get_vault_password(password_file))
+    vault = get_vault(password_file)
     with open(path, 'r') as f:
         encrypted_data = f.read()
 
@@ -56,7 +54,7 @@ def restore(path, password_file=None):
 
     :param path: path to original file
     """
-    vault = VaultLib(get_vault_password(password_file))
+    vault = get_vault(password_file)
     atk_path = os.path.join(ATK_VAULT, path)
 
     # Load stored data
