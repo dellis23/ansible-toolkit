@@ -17,8 +17,7 @@ def get_vault(vault_password_file):
         the path to the Ansible vault password file.
     :return: VaultLib
     """
-    dao = create_dao()
-    return dao.get_vault(vault_password_file)
+    return create_dao().get_vault(vault_password_file)
 
 
 def show_variables(host, inventory_path=None, vault_password_file=None):
@@ -29,6 +28,5 @@ def show_variables(host, inventory_path=None, vault_password_file=None):
     :param vault_password_file:
         the path to the Ansible vault password file.
     """
-    dao = create_dao()
-    return dao.show_variables(
+    return create_dao().show_variables(
         host, inventory_path, vault_password_file)
