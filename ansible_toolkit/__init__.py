@@ -13,29 +13,6 @@ config = ConfigParser.ConfigParser()
 config.read([os.path.expanduser('~/.atk')])
 
 
-def get_vault(vault_password_file):
-    """
-    Returns the Ansible vault.
-
-    :param vault_password_file:
-        the path to the Ansible vault password file.
-    :return: VaultLib
-    """
-    return create_dao().get_vault(vault_password_file)
-
-
-def show_variables(host, inventory_path=None, vault_password_file=None):
-    """
-
-    :param host: the host name for which you want to display variables.
-    :param inventory_path: the path to the Ansible inventory.
-    :param vault_password_file:
-        the path to the Ansible vault password file.
-    """
-    return create_dao().show_variables(
-        host, inventory_path, vault_password_file)
-
-
 def close_vault(vault_password_file=None):
     """
     :param vault_password_file:
@@ -49,6 +26,17 @@ def close_vault(vault_password_file=None):
             restore(original_path, vault_password_file)
 
 
+def get_vault(vault_password_file):
+    """
+    Returns the Ansible vault.
+
+    :param vault_password_file:
+        the path to the Ansible vault password file.
+    :return: VaultLib
+    """
+    return create_dao().get_vault(vault_password_file)
+
+
 def open_vault(vault_password_file=None):
     """
     :param vault_password_file:
@@ -56,3 +44,15 @@ def open_vault(vault_password_file=None):
     """
     for file_ in get_files('.'):
         backup(file_, vault_password_file)
+
+
+def show_variables(host, inventory_path=None, vault_password_file=None):
+    """
+
+    :param host: the host name for which you want to display variables.
+    :param inventory_path: the path to the Ansible inventory.
+    :param vault_password_file:
+        the path to the Ansible vault password file.
+    """
+    return create_dao().show_variables(
+        host, inventory_path, vault_password_file)
