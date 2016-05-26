@@ -12,7 +12,6 @@ from ansible.runner import Runner
 from ansible.inventory import Inventory
 from ansible.utils.vault import VaultLib
 from ansible.utils import combine_vars, read_vault_file, template
-from ansible_toolkit.utils import red, green
 
 
 class AnsibleDaoImpl(AnsibleDao):
@@ -120,7 +119,7 @@ def get_inject_vars(self, host):
     all_vars = {}
     for name, value in to_merge:
         old_inject = all_vars
-        inject = combine_vars(all_vars, value)
+        all_vars = combine_vars(all_vars, value)
         all_vars[name] = (old_inject, all_vars)
 
     return all_vars
