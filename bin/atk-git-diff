@@ -2,7 +2,6 @@
 
 import argparse
 import subprocess
-import sys
 
 from ansible_toolkit.git_diff import show_unencrypted_diffs
 
