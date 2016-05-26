@@ -1,0 +1,5 @@
+[group]
+host1
+
+[group:vars]
+var1=1
