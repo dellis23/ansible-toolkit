@@ -61,19 +61,19 @@ class AnsibleDaoImpl(AnsibleDao):
         return read_vault_file(vault_password_file)
 
     def show_variables(
-            self, host, inventory_file=None, vault_password_file=None):
+            self, host, inventory_path=None, vault_password_file=None):
         """
 
         :param host:
             the host name for which you want to display variables.
-        :param inventory_file: the inventory.
+        :param inventory_path: the path to the Ansible inventory.
         :param vault_password_file:
             the path to the Ansible vault password file.
         """
-        inventory = self.get_inventory(inventory_file, vault_password_file)
+        inventory = self.get_inventory(inventory_path, vault_password_file)
         Runner.get_inject_vars = get_inject_vars
         runner = Runner(inventory=inventory)
-        runner.get_inject_vars(host)
+        return runner.get_inject_vars(host)
 
 
 def get_inject_vars(self, host):
@@ -106,7 +106,6 @@ def get_inject_vars(self, host):
     module_vars = template.template(
         self.basedir, self.module_vars, module_vars_inject)
 
-    inject = {}
     to_merge.extend([
         ('Host Variables', ansible_host.vars),
         ('Setup Cache', self.setup_cache.get(host, {})),
@@ -118,10 +117,10 @@ def get_inject_vars(self, host):
         ('Role Parameters', self.role_params),
         ('Extra Variables', self.extra_vars),
     ])
+    all_vars = {}
     for name, value in to_merge:
-        old_inject = inject
-        inject = combine_vars(inject, value)
-        print name
-        ansible_toolkit.utils.show_diff(old_inject, inject)
+        old_inject = all_vars
+        inject = combine_vars(all_vars, value)
+        all_vars[name] = (old_inject, all_vars)
 
-    return inject
+    return all_vars

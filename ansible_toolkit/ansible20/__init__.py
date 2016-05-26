@@ -59,11 +59,11 @@ class AnsibleDaoImpl(AnsibleDao):
         return CLI.read_vault_password_file(vault_password_file, DataLoader())
 
     def show_variables(
-            self, host, inventory_file=None, vault_password_file=None):
+            self, host, inventory_path=None, vault_password_file=None):
         """
 
         :param host: the host name for which you want to display variables.
-        :param inventory_file: the inventory.
+        :param inventory_path: the path to the Ansible inventory.
         :param vault_password_file:
             the path to the Ansible vault password file.
         """
