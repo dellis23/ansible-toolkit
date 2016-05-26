@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import ConfigParser
+import os
 import os.path
 
 from .dao import create_dao
+from .utils import get_files, split_path
+from .vault import ATK_VAULT, restore
 
 config = ConfigParser.ConfigParser()
 config.read([os.path.expanduser('~/.atk')])
@@ -30,3 +33,16 @@ def show_variables(host, inventory_path=None, vault_password_file=None):
     """
     return create_dao().show_variables(
         host, inventory_path, vault_password_file)
+
+
+def close_vault(vault_password_file=None):
+    """
+    :param vault_password_file:
+        the path to the Ansible vault password file.
+    """
+    for file_ in get_files(ATK_VAULT):
+        if os.path.basename(file_) == 'encrypted':
+
+            # Get the path without the atk vault base and encrypted filename
+            original_path = os.path.join(*split_path(file_)[1:-1])
+            restore(original_path, vault_password_file)

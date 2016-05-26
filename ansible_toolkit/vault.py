@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import hashlib
+
 import os
-
-from utils import mkdir_p, split_path, get_files
-
+from utils import mkdir_p, get_files
 from . import get_vault
+
 
 ATK_VAULT = '.atk-vault'
 
@@ -81,12 +81,3 @@ def restore(path, password_file=None):
     # Clean atk vault
     os.remove(os.path.join(atk_path, 'encrypted'))
     os.remove(os.path.join(atk_path, 'hash'))
-
-
-def restore_all(password_file=None):
-    for file_ in get_files(ATK_VAULT):
-        if os.path.basename(file_) == 'encrypted':
-
-            # Get the path without the atk vault base and encrypted filename
-            original_path = os.path.join(*split_path(file_)[1:-1])
-            restore(original_path, password_file)
