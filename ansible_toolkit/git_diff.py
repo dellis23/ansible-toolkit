@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import ansible_toolkit
 import difflib
 import re
 import subprocess
 
 from exceptions import MalformedGitDiff
 from itertools import islice
-from utils import get_vault_password, green, red, cyan, intense
-
-from . import DaoImpl
-
-VaultLib = DaoImpl.get_vault_lib()
+from utils import green, red, cyan, intense
 
 
 def get_parts(git_diff_output):
@@ -122,7 +119,7 @@ def decrypt_diff(diff_part, password_file=None):
 
     Returns a tuple of decrypted old contents and decrypted new contents.
     """
-    vault = VaultLib(get_vault_password(password_file))
+    vault = ansible_toolkit.get_vault(password_file)
     old_contents, new_contents = get_contents(diff_part)
     if vault.is_encrypted(old_contents):
         old_contents = vault.decrypt(old_contents)
