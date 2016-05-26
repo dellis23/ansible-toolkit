@@ -4,66 +4,44 @@ import ansible
 
 
 class AnsibleDao(object):
-    """
-    Interface for Ansible Data Access Object implementation.
-    """
+
+    """Interface for Ansible Data Access Object implementation."""
 
     def __init__(self):
         self.version = ansible.__version__
 
-    def get_vault_lib(self):
+    def get_vault(self, vault_password_file):
         """
-        Returns the Ansible VaultLib class.
-        """
-        raise NotImplementedError
+        Returns the Ansible vault.
 
-    def read_vault_file(vault_password_file):
-        """
-        Read a vault password from a file or if executable,
-        execute the script and
-        retrieve password from STDOUT
+        :param vault_password_file:
+            the path to the Ansible vault password file.
+        :return: VaultLib
         """
         raise NotImplementedError
 
+    def get_vault_password(self, vault_password_file=None):
+        """
+        Returns the vault password.
 
-class Ansible2(AnsibleDao):
-    """
-    Ansible 2.x implementation.
-    """
+        Read a vault password from a file.
 
-    def __init__(self):
-        if not ansible.__version__.startswith('2'):
-            raise NotImplementedError(
-                    'Cannot use Ansible 2.x implementation with Ansible 1.x!')
+        :param vault_password_file:
+            the path to the Ansible vault password file.
+        :return: the vault password.
+        """
+        raise NotImplementedError
 
-    def get_vault_lib(self):
-        from ansible.parsing.vault import VaultLib
-        return VaultLib
+    def show_variables(
+            self, host, inventory_file=None, vault_password_file=None):
+        """
 
-    def read_vault_file(self, vault_password_file):
-        from ansible.cli import CLI
-        from ansible.parsing.dataloader import DataLoader
-
-        return CLI.read_vault_password_file(vault_password_file, DataLoader())
-
-
-class Ansible1(AnsibleDao):
-    """
-    Ansible 1.x implementation.
-    """
-
-    def __init__(self):
-        if not ansible.__version__.startswith('1'):
-            raise NotImplementedError(
-                    'Cannot use Ansible 1.x implementation with Ansible 2.x!')
-
-    def get_vault_lib(self):
-        from ansible.utils.vault import VaultLib
-        return VaultLib
-
-    def read_vault_file(self, vault_password_file):
-        from ansible.utils import read_vault_file
-        return read_vault_file(vault_password_file)
+        :param host: the host name for which you want to display variables.
+        :param inventory_file: the inventory.
+        :param vault_password_file:
+            the path to the Ansible vault password file.
+        """
+        raise NotImplementedError
 
 
 def create_dao():
@@ -73,7 +51,14 @@ def create_dao():
 
     :return: Ansible data access object.
     """
-
-    if ansible.__version__.startswith('2'):
-        return Ansible2()
-    return Ansible1()
+    if ansible.__version__.startswith('2.0') or \
+            ansible.__version__.startswith('2.1'):
+        from ansible_toolkit.ansible20 import AnsibleDaoImpl
+        return AnsibleDaoImpl()
+    elif ansible.__version__.startswith('1.9'):
+        from ansible_toolkit.ansible19 import AnsibleDaoImpl
+        return AnsibleDaoImpl()
+    else:
+        raise NotImplementedError(
+            'There is no DAO implementation for Ansible version %s' %
+            ansible.__version__)
