@@ -4,6 +4,7 @@ import ansible_toolkit.utils
 import ConfigParser
 import errno
 import mock
+import os.path
 import pytest
 import unittest
 
@@ -58,6 +59,27 @@ class ColorTestCase(unittest.TestCase):
         """Test ansible_toolkit.utils.yellow() function."""
         self.assertIsNone(ansible_toolkit.utils.yellow(self.text))
         self._test_output(ansible_toolkit.utils.YELLOW)
+
+
+class GetFilesTestCase(unittest.TestCase):
+
+    """Test case for the ansible_toolkit.utils.get_files() function."""
+
+    @mock.patch('ansible_toolkit.utils.os', autospec=True)
+    def test(self, mock_os):
+        mock_os.walk.return_value = [
+            ('/tmp', ['.font-unix', 'test'], ['.X0-lock', 'pulse0YPY3T']),
+            ('/tmp/.font-unix', [], []),
+            ('/tmp/test', [], ['.a', 'b'])
+        ]
+        mock_os.path.join = os.path.join
+
+        result = ansible_toolkit.utils.get_files('/tmp')
+        self.assertIsNotNone(result)
+        self.assertEqual(
+            ['/tmp/pulse0YPY3T', '/tmp/test/b'],
+            result
+        )
 
 
 class GetVaultPasswordFileTestCase(unittest.TestCase):
