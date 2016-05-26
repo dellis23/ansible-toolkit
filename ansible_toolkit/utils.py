@@ -1,18 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import ansible_toolkit
 import ConfigParser
 import errno
 import os
 import sys
-
-from ansible.inventory import Inventory
-
-from . import DaoImpl
-
-config = ConfigParser.ConfigParser()
-
-config.read([os.path.expanduser('~/.atk')])
-
 
 # Terminal Colors
 
@@ -44,31 +36,24 @@ def intense(text):
     sys.stdout.write('%s%s%s\n' % (INTENSE, text, ENDC))
 
 
-# Vault Password
-
-def get_vault_password(password_file=None):
-    if password_file is None:
-        try:
-            password_file = config.get('vault', 'password_file')
-        except ConfigParser.NoSectionError:
-            return None
-    return DaoImpl.read_vault_file(password_file)
-
-
-# Inventory
-
-def get_inventory(inventory_path=None, vault_password_path=None):
-    if inventory_path is None:
-        try:
-            inventory_path = os.path.expanduser(
-                config.get('inventory', 'path'))
-        except ConfigParser.NoSectionError:
-            inventory_path = 'inventory'
-    vault_password = get_vault_password(vault_password_path)
-    return Inventory(inventory_path, vault_password=vault_password)
-
-
 # Filesystem Tools
+
+def get_files(path):
+    """
+    Returns a recursive list of all non-hidden files in and below the current
+    directory.
+    """
+    return_files = []
+    for root, dirs, files in os.walk(path):
+
+        # Skip hidden files
+        files = [f for f in files if not f[0] == '.']
+        dirs[:] = [d for d in dirs if not d[0] == '.']
+
+        for filename in files:
+            return_files.append(os.path.join(root, filename))
+    return return_files
+
 
 def mkdir_p(path):
     try:
@@ -97,18 +82,27 @@ def split_path(path):
     return map(os.path.normpath, parts)[::-1]
 
 
-def get_files(path):
-    """
-    Returns a recursive list of all non-hidden files in and below the current
-    directory.
-    """
-    return_files = []
-    for root, dirs, files in os.walk(path):
+# Other
 
-        # Skip hidden files
-        files = [f for f in files if not f[0] == '.']
-        dirs[:] = [d for d in dirs if not d[0] == '.']
+def get_vault_password_file():
+    """
+    Returns the atk configured location for the Ansible vault password file.
 
-        for filename in files:
-            return_files.append(os.path.join(root, filename))
-    return return_files
+    :return: the atk configured location for the Ansible vault password file.
+    """
+    try:
+        return \
+            ansible_toolkit.config.get('vault', 'password_file')
+    except ConfigParser.NoSectionError:
+        pass
+
+    return None
+
+
+def show_diff(old, new):
+    for k, v in new.iteritems():
+        if k in old.keys() and v == old[k]:
+            continue
+        if k in old.keys() and v != old[k]:
+            red(" - ['{}'] = {}".format(k, old[k]))
+        green(" + ['{}'] = {}".format(k, v))
