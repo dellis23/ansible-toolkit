@@ -13,4 +13,9 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--vault-password-file', type=str,
                         help="Path to vault password file")
     args = parser.parse_args()
-    ansible_toolkit.show_variables(args.host, args.inventory, args.vault_password_file)
+
+    for name, previous_vars, current_vars in \
+            ansible_toolkit.show_variables(
+                args.host, args.inventory, args.vault_password_file):
+        print name
+        ansible_toolkit.utils.show_diff(previous_vars, current_vars)
