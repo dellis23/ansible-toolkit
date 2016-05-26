@@ -3,7 +3,7 @@
 import mock
 import unittest
 
-from ansible_toolkit.show_vars import show_diff
+from ansible_toolkit.utils import show_diff
 
 
 class TestShowDiff(unittest.TestCase):
