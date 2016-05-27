@@ -7,6 +7,8 @@ class AnsibleDao(object):
 
     """Interface for Ansible Data Access Object implementation."""
 
+    __slots__ = ('version',)
+
     def __init__(self):
         self.version = ansible.__version__
 
