@@ -12,6 +12,15 @@ class AnsibleDao(object):
     def __init__(self):
         self.version = ansible.__version__
 
+    def gather_facts(self, host, inventory=None, user=None):
+        """
+        :param host:
+        :param inventory:
+        :param user:
+        :return:
+        """
+        raise NotImplementedError
+
     def get_vault(self, vault_password_file):
         """
         Returns the Ansible vault.
