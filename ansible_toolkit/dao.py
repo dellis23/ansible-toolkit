@@ -28,7 +28,7 @@ class AnsibleDao(object):
         :param setup_cache:
         :return:
         """
-        NotImplementedError
+        raise NotImplementedError
 
     def get_vault(self, vault_password_file):
         """
