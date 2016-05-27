@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import ConfigParser
-from ansible_toolkit import create_dao
 import ansible_toolkit.dao
 import os
 import os.path
