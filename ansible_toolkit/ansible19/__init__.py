@@ -3,11 +3,13 @@
 import ansible
 import ansible.constants as C
 import ansible.utils.template
+
 import ansible_toolkit
 import ansible_toolkit.utils
+
 import ConfigParser
-import tempfile
 import os.path
+import tempfile
 
 from ansible.callbacks import AggregateStats
 from ansible.playbook import PlayBook
@@ -16,6 +18,7 @@ from ansible.runner import Runner
 from ansible.utils.vault import VaultLib
 from ansible.utils import combine_vars, read_vault_file, template
 
+from ansible_toolkit.config import config_data
 from ansible_toolkit.dao import AnsibleDao
 from ansible_toolkit.utils import yellow
 
@@ -47,7 +50,7 @@ class AnsibleDaoImpl(AnsibleDao):
         if inventory_path is None:
             try:
                 inventory_path = os.path.expanduser(
-                    ansible_toolkit.config.get('inventory', 'path'))
+                    config_data.get('inventory', 'path'))
             except ConfigParser.NoSectionError:
                 inventory_path = 'inventory'
         vault_password = self.get_vault(vault_password_path)
