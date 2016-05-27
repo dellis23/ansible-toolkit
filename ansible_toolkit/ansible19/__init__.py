@@ -18,8 +18,12 @@ class AnsibleDaoImpl(AnsibleDao):
 
     """Ansible 1.9.x  implementation."""
 
+    __slots__ = ('vault_password_file', 'version')
+
     def __init__(self):
-        if not ansible.__version__.startswith('1.9'):
+        super(AnsibleDaoImpl, self).__init__()
+
+        if not self.version.startswith('1.9'):
             raise NotImplementedError(
                 'Cannot use Ansible 1.9.x implementation with Ansible %s!' %
                 ansible.__version__)

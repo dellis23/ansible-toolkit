@@ -15,8 +15,12 @@ class AnsibleDaoImpl(AnsibleDao):
 
     """Ansible 2.0.x implementation."""
 
+    __slots__ = ('vault_password_file', 'version')
+
     def __init__(self):
-        if not ansible.__version__.startswith('2'):
+        super(AnsibleDaoImpl, self).__init__()
+
+        if not self.version.startswith('2'):
             raise NotImplementedError(
                 'Cannot use Ansible 2.0.x implementation with Ansible %s!' %
                 ansible.__version__)
