@@ -2,10 +2,32 @@
 
 import ansible
 import ansible_toolkit.dao
+import mock
 import pytest
 import unittest
 
 from ansible_toolkit.dao import AnsibleDao
+
+
+class CreateDaoTestCase(unittest.TestCase):
+
+    """
+    Test case for the
+    ansible_toolkit.dao.create_dao() function.
+    """
+
+    def test(self):
+        dao = ansible_toolkit.dao.create_dao()
+        self.assertIsNotNone(dao)
+        self.assertEqual(ansible.__version__, dao.version)
+
+    @mock.patch('ansible_toolkit.dao.ansible', autospec=True)
+    def test_no_implementation(self, mock_ansible):
+        """No implementation exists for the given Ansible version"""
+        mock_ansible.__version__ = '100.0.1'
+
+        with pytest.raises(NotImplementedError):
+            ansible_toolkit.dao.create_dao()
 
 
 class InitTestCase(unittest.TestCase):
@@ -16,7 +38,7 @@ class InitTestCase(unittest.TestCase):
     """
 
     def test(self):
-        dao = ansible_toolkit.dao.create_dao()
+        dao = AnsibleDao()
         self.assertEqual(ansible.__version__, dao.version)
 
 
