@@ -18,12 +18,14 @@ def close_vault(vault_password_file=None):
     :param vault_password_file:
         the path to the Ansible vault password file.
     """
+    ansible_vault = get_vault(vault_password_file)
+
     for file_ in get_files(ATK_VAULT):
         if os.path.basename(file_) == 'encrypted':
 
             # Get the path without the atk vault base and encrypted filename
             original_path = os.path.join(*split_path(file_)[1:-1])
-            restore(original_path, vault_password_file)
+            restore(original_path, ansible_vault)
 
 
 def get_vault(vault_password_file):
@@ -42,8 +44,10 @@ def open_vault(vault_password_file=None):
     :param vault_password_file:
         the path to the Ansible vault password file.
     """
+    ansible_vault = get_vault(vault_password_file)
+
     for file_ in get_files('.'):
-        backup(file_, vault_password_file)
+        backup(file_, ansible_vault)
 
 
 def show_variables(host, inventory_path=None, vault_password_file=None):
