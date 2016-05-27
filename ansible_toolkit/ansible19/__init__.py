@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import ansible
-import ansible.callbacks
 import ansible.constants as C
 import ansible.utils.template
 import ansible_toolkit
@@ -10,13 +9,15 @@ import ConfigParser
 import tempfile
 import os.path
 
-from ansible_toolkit.dao import AnsibleDao
-
+from ansible.callbacks import AggregateStats
 from ansible.playbook import PlayBook
 from ansible.inventory import Inventory
 from ansible.runner import Runner
 from ansible.utils.vault import VaultLib
 from ansible.utils import combine_vars, read_vault_file, template
+
+from ansible_toolkit.dao import AnsibleDao
+from ansible_toolkit.utils import yellow
 
 
 SETUP_PLAYBOOK = """
@@ -70,7 +71,7 @@ class AnsibleDaoImpl(AnsibleDao):
             playbook_file.seek(0)
 
             # ... run setup module
-            stats = ansible.callbacks.AggregateStats()
+            stats = AggregateStats()
             playbook = PlayBook(
                 playbook=playbook_file.name,
                 inventory=inventory,
@@ -153,7 +154,8 @@ class AnsibleDaoImpl(AnsibleDao):
         :param vault_password:
         :return:
         """
-        return ansible.utils.template.template_from_file(basedir, path, vars, vault_password)
+        return ansible.utils.template.template_from_file(
+            basedir, path, vars, vault_password)
 
 
 class Callbacks(object):
