@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import ConfigParser
+from ansible_toolkit import create_dao
 import ansible_toolkit.dao
 import os
 import os.path
@@ -71,3 +72,18 @@ def show_variables(host, inventory_path=None, vault_password_file=None):
     """
     return create_dao().show_variables(
         host, inventory_path, vault_password_file)
+
+
+def show_template(host, path, gather_facts=True,
+                  inventory_file=None, password_file=None,
+                  user=None):
+    dao_instance = create_dao()
+    inventory = dao_instance.get_inventory(
+        inventory_file, password_file)
+    setup_cache = dao_instance.gather_facts(
+        host, inventory, user) if gather_facts else {}
+
+    host_vars = dao_instance.get_host_variables(
+        host, inventory, setup_cache)
+
+    return dao_instance.template_from_file('.', path, host_vars)

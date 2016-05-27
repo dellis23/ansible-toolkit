@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
+import ansible_toolkit
 import argparse
-
-from ansible_toolkit.show_template import show_template
 
 
 if __name__ == '__main__':
@@ -28,6 +27,7 @@ if __name__ == '__main__':
     gather_facts = not args.no_gather_facts
 
     # Render Template
-    show_template(args.host, args.path, gather_facts,
-                  args.inventory, args.vault_password_file,
-                  args.user)
+    print ansible_toolkit.show_template(
+        args.host, args.path, gather_facts,
+        args.inventory, args.vault_password_file,
+        args.user)
