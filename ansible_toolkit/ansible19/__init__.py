@@ -1,17 +1,31 @@
 # -*- coding: utf-8 -*-
 
 import ansible
+import ansible.callbacks
+import ansible.constants as C
 import ansible_toolkit
 import ansible_toolkit.utils
 import ConfigParser
+import tempfile
 import os.path
 
 from ansible_toolkit.dao import AnsibleDao
 
-from ansible.runner import Runner
+from ansible.playbook import PlayBook
 from ansible.inventory import Inventory
+from ansible.runner import Runner
 from ansible.utils.vault import VaultLib
 from ansible.utils import combine_vars, read_vault_file, template
+
+from utils import yellow
+
+SETUP_PLAYBOOK = """
+---
+- hosts:
+    - {host}
+  tasks:
+    - setup:
+"""
 
 
 class AnsibleDaoImpl(AnsibleDao):
@@ -37,6 +51,61 @@ class AnsibleDaoImpl(AnsibleDao):
                 inventory_path = 'inventory'
         vault_password = self.get_vault(vault_password_path)
         return Inventory(inventory_path, vault_password=vault_password)
+
+    def gather_facts(self, host, inventory=None, user=None):
+        """
+        :param host:
+        :param inventory:
+        :param user:
+        :return:
+        """
+        if inventory is None:
+            inventory = self.get_inventory()
+
+        try:
+
+            # ... temporary playbook file
+            playbook_file = tempfile.NamedTemporaryFile()
+            playbook_file.write(SETUP_PLAYBOOK.format(host=host))
+            playbook_file.seek(0)
+
+            # ... run setup module
+            stats = ansible.callbacks.AggregateStats()
+            playbook = PlayBook(
+                playbook=playbook_file.name,
+                inventory=inventory,
+                callbacks=Callbacks(),
+                runner_callbacks=Callbacks(),
+                remote_user=user or C.DEFAULT_REMOTE_USER,
+                stats=stats,
+            )
+            results = playbook.run()
+
+            # ... notify the user of failures
+            for host, result in results.iteritems():
+                if result.get('unreachable') or result.get('failures'):
+                    yellow('Unable to gather facts for host "{}"'.format(host))
+
+        finally:
+            playbook_file.close()
+
+        return playbook.SETUP_CACHE
+
+
+    def get_host_variables(self, host, inventory, setup_cache):
+        """
+        :param host:
+        :param inventory:
+        :param setup_cache:
+        :return:
+        """
+        runner = Runner(
+            inventory=inventory,
+            setup_cache=setup_cache,
+        )
+        host_vars = runner.get_inject_vars(host)
+        return host_vars
+
 
     def get_vault(self, vault_password_file=None):
         """
@@ -77,6 +146,14 @@ class AnsibleDaoImpl(AnsibleDao):
         Runner.get_inject_vars = get_inject_vars
         runner = Runner(inventory=inventory)
         return runner.get_inject_vars(host)
+
+
+class Callbacks(object):
+
+    def __getattr__(self, name):
+        def do_nothing(*args, **kwargs):
+            return
+        return do_nothing
 
 
 def get_inject_vars(self, host):

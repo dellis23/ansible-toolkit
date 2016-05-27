@@ -21,6 +21,15 @@ class AnsibleDao(object):
         """
         raise NotImplementedError
 
+    def get_host_variables(self, host, inventory, setup_cache):
+        """
+        :param host:
+        :param inventory:
+        :param setup_cache:
+        :return:
+        """
+        NotImplementedError
+
     def get_vault(self, vault_password_file):
         """
         Returns the Ansible vault.

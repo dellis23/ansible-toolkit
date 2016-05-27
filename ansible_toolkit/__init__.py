@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import ConfigParser
+import ansible_toolkit.dao
 import os
 import os.path
 
@@ -26,6 +27,16 @@ def close_vault(vault_password_file=None):
             # Get the path without the atk vault base and encrypted filename
             original_path = os.path.join(*split_path(file_)[1:-1])
             restore(original_path, ansible_vault)
+
+
+def gather_facts(host, inventory=None, user=None):
+    """
+    :param host:
+    :param inventory:
+    :param user:
+    :return:
+    """
+    return ansible_toolkit.dao.create_dao().gather_facts(host, inventory, user)
 
 
 def get_vault(vault_password_file):
