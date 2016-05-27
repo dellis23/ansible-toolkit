@@ -59,6 +59,9 @@ class InterfaceTestCase(unittest.TestCase):
             interface.gather_facts(None)
 
         with pytest.raises(NotImplementedError):
+            interface.get_host_variables(None, None, None)
+
+        with pytest.raises(NotImplementedError):
             interface.get_vault(None)
 
         with pytest.raises(NotImplementedError):
