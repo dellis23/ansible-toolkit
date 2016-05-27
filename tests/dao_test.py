@@ -55,6 +55,9 @@ class InterfaceTestCase(unittest.TestCase):
         interface = AnsibleDao()
 
         with pytest.raises(NotImplementedError):
+            interface.gather_facts(None)
+
+        with pytest.raises(NotImplementedError):
             interface.get_vault(None)
 
         with pytest.raises(NotImplementedError):
