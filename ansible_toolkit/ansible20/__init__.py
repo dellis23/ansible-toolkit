@@ -85,3 +85,13 @@ class AnsibleDaoImpl(AnsibleDao):
         inventory = Inventory(
             loader=loader, variable_manager=variable_manager, host_list=[host])
         variable_manager.set_inventory(inventory)
+
+    def template_from_file(self, basedir, path, vars, vault_password=None):
+        """
+        :param basedir:
+        :param path:
+        :param vars:
+        :param vault_password:
+        :return:
+        """
+        raise NotImplementedError

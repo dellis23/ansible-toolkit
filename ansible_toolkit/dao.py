@@ -63,6 +63,17 @@ class AnsibleDao(object):
         """
         raise NotImplementedError
 
+    def template_from_file(self, basedir, path, vars, vault_password=None):
+        """
+        Run a file through the template engine.
+
+        :param basedir:
+        :param path:
+        :param vars:
+        :param vault_password: the Ansible vault password.
+        """
+        raise NotImplementedError
+
 
 def create_dao():
     """

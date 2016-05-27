@@ -3,6 +3,7 @@
 import ansible
 import ansible.callbacks
 import ansible.constants as C
+import ansible.utils.template
 import ansible_toolkit
 import ansible_toolkit.utils
 import ConfigParser
@@ -17,7 +18,6 @@ from ansible.runner import Runner
 from ansible.utils.vault import VaultLib
 from ansible.utils import combine_vars, read_vault_file, template
 
-from utils import yellow
 
 SETUP_PLAYBOOK = """
 ---
@@ -91,7 +91,6 @@ class AnsibleDaoImpl(AnsibleDao):
 
         return playbook.SETUP_CACHE
 
-
     def get_host_variables(self, host, inventory, setup_cache):
         """
         :param host:
@@ -105,7 +104,6 @@ class AnsibleDaoImpl(AnsibleDao):
         )
         host_vars = runner.get_inject_vars(host)
         return host_vars
-
 
     def get_vault(self, vault_password_file=None):
         """
@@ -146,6 +144,16 @@ class AnsibleDaoImpl(AnsibleDao):
         Runner.get_inject_vars = get_inject_vars
         runner = Runner(inventory=inventory)
         return runner.get_inject_vars(host)
+
+    def template_from_file(self, basedir, path, vars, vault_password=None):
+        """
+        :param basedir:
+        :param path:
+        :param vars:
+        :param vault_password:
+        :return:
+        """
+        return ansible.utils.template.template_from_file(basedir, path, vars, vault_password)
 
 
 class Callbacks(object):

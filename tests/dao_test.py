@@ -64,6 +64,9 @@ class InterfaceTestCase(unittest.TestCase):
             interface.get_vault_password(None)
 
         with pytest.raises(NotImplementedError):
+            interface.template_from_file(None, None, None, None)
+
+        with pytest.raises(NotImplementedError):
             interface.show_variables(None)
 
 
