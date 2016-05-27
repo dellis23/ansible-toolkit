@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
+
 import ansible
-import ansible_toolkit.dao
+import ansible_toolkit
 import mock
 import pytest
 import unittest

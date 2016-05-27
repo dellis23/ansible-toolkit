@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-import ansible_toolkit
 import argparse
+
+import ansible_toolkit
 
 
 if __name__ == '__main__':

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import ansible_toolkit
 import difflib
-import re
 import subprocess
-
-from exceptions import MalformedGitDiff
 from itertools import islice
+
+import ansible_toolkit
+import re
+from exceptions import MalformedGitDiff
 from utils import green, red, cyan, intense
 
 

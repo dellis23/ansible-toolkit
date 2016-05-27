@@ -1,17 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import ConfigParser
-import ansible_toolkit.dao
-import os
 import os.path
 
+from .config import config_data
 from .dao import create_dao
 from .utils import get_files, split_path
 from .vault import ATK_VAULT, backup, restore
-
-
-config = ConfigParser.ConfigParser()
-config.read([os.path.expanduser('~/.atk')])
 
 
 def close_vault(vault_password_file=None):
@@ -36,7 +30,7 @@ def gather_facts(host, inventory=None, user=None):
     :param user:
     :return:
     """
-    return ansible_toolkit.dao.create_dao().gather_facts(host, inventory, user)
+    return create_dao().gather_facts(host, inventory, user)
 
 
 def get_vault(vault_password_file):
@@ -63,7 +57,6 @@ def open_vault(vault_password_file=None):
 
 def show_variables(host, inventory_path=None, vault_password_file=None):
     """
-
     :param host: the host name for which you want to display variables.
     :param inventory_path: the path to the Ansible inventory.
     :param vault_password_file:
@@ -76,6 +69,15 @@ def show_variables(host, inventory_path=None, vault_password_file=None):
 def show_template(host, path, gather_facts=True,
                   inventory_file=None, password_file=None,
                   user=None):
+    """
+    :param host:
+    :param path:
+    :param gather_facts:
+    :param inventory_file:
+    :param password_file:
+    :param user:
+    :return:
+    """
     dao_instance = create_dao()
     inventory = dao_instance.get_inventory(
         inventory_file, password_file)

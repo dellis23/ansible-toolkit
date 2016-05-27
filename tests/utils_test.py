@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import ansible_toolkit.utils
+import ansible_toolkit
 import ConfigParser
 import errno
 import mock
@@ -90,7 +90,7 @@ class GetVaultPasswordFileTestCase(unittest.TestCase):
     ansible_toolkit.utils.get_vault_password_file() function.
     """
 
-    @mock.patch('ansible_toolkit.config', autospec=True)
+    @mock.patch('ansible_toolkit.utils.config_data', autospec=True)
     def test_get(self, mock_config):
         mock_config.get.return_value = 'test'
 
@@ -102,7 +102,7 @@ class GetVaultPasswordFileTestCase(unittest.TestCase):
             'vault', 'password_file'
         )
 
-    @mock.patch('ansible_toolkit.config', autospec=True)
+    @mock.patch('ansible_toolkit.utils.config_data', autospec=True)
     def test_nosectionerror(self, mock_config):
         mock_config.get.side_effect = ConfigParser.NoSectionError('vault')
 

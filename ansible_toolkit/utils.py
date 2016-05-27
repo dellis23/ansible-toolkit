@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import ansible_toolkit
 import ConfigParser
 import errno
 import os
 import sys
+
+from .config import config_data
 
 # Terminal Colors
 
@@ -91,8 +92,7 @@ def get_vault_password_file():
     :return: the atk configured location for the Ansible vault password file.
     """
     try:
-        return \
-            ansible_toolkit.config.get('vault', 'password_file')
+        return config_data.get('vault', 'password_file')
     except ConfigParser.NoSectionError:
         pass
 
