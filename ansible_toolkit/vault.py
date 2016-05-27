@@ -4,19 +4,17 @@ import hashlib
 
 import os
 from utils import mkdir_p
-from . import get_vault
 
 
 ATK_VAULT = '.atk-vault'
 
 
-def backup(path, password_file=None):
+def backup(path, vault):
     """
     Replaces the contents of a file with its decrypted counterpart, storing the
     original encrypted version and a hash of the file contents for later
     retrieval.
     """
-    vault = get_vault(password_file)
     with open(path, 'r') as f:
         encrypted_data = f.read()
 
@@ -42,14 +40,13 @@ def backup(path, password_file=None):
                 f.write(decrypted_data)
 
 
-def restore(path, password_file=None):
+def restore(path, vault):
     """
     Retrieves a file from the atk vault and restores it to its original
     location, re-encrypting it if it has changed.
 
     :param path: path to original file
     """
-    vault = get_vault(password_file)
     atk_path = os.path.join(ATK_VAULT, path)
 
     # Load stored data
