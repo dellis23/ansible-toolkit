@@ -3,9 +3,12 @@
 import tempfile
 
 import ansible.callbacks
-from ansible.playbook import PlayBook
 import ansible.constants as C
-from utils import get_inventory, yellow
+
+import ansible_toolkit.dao
+
+from ansible.playbook import PlayBook
+from utils import yellow
 
 
 SETUP_PLAYBOOK = """
@@ -26,8 +29,15 @@ class Callbacks(object):
 
 
 def gather_facts(host, inventory=None, user=None):
+    """
+    :param host:
+    :param inventory:
+    :param user:
+    :return:
+    """
+    dao = ansible_toolkit.dao.create_dao()
     if inventory is None:
-        inventory = get_inventory()
+        inventory = dao.get_inventory()
 
     # Gather facts
     try:
